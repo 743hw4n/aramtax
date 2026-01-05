@@ -1,0 +1,8 @@
+# env
+.env
+
+# Virtual Environment
+/backend/aram/
+
+# IDE
+.vscode/
