@@ -1,7 +1,7 @@
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from .models import Consultation
 from .serializers import ConsultationSerializer, ConsultationLookupSerializer
 
@@ -10,16 +10,16 @@ class ConsultationViewSet(viewsets.ModelViewSet):
     상담 신청 API
     CRUD 기능 제공 및 이메일과 비밀번호로 상담 내역 조회 기능 포함
     """
-    
+
     queryset = Consultation.objects.all()           # 모든 Consultation 객체
     serializer_class = ConsultationSerializer       # 데이터 변환에 사용할 시리얼라이저
-    parser_classes = [MultiPartParser, FormParser]  # 파일 업로드 받기 위한 파서 설정
+    parser_classes = [MultiPartParser, JSONParser]  # 파일 업로드 및 JSON 데이터 파서
     
     def create(self, request, *args, **kwargs):
         """상담 신청 생성"""
-        serializer = self.get_serializer(data=request.data) # request.data: 클라이언트가 보낸 데이터
-        serializer.is_valid(raise_exception=True)           # 유효성 검사
-        self.perform_create(serializer)                      # 데이터베이스에 저장
+        serializer = self.get_serializer(data=request.data) # serializer 생성 (데이터 받기)
+        serializer.is_valid(raise_exception=True)           # 검증
+        self.perform_create(serializer)                      # DB에 저장 명령 
         headers = self.get_success_headers(serializer.data) 
         return Response(
             {'message': '상담 신청이 완료되었습니다.', 'data': serializer.data}, 
