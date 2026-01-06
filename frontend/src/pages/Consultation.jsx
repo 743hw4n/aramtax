@@ -1,5 +1,5 @@
-import { useState } from 'react'
-  import axios from 'axios'
+import { useState } from 'react'    // 폼 데이터 상태 관리
+  import axios from 'axios'         // Django API로 데이터 전송
 
   function Consultation() {
       const [formData, setFormData] = useState({
@@ -75,7 +75,7 @@ import { useState } from 'react'
       return (
           <div className="min-vh-100 bg-light">
               {/* 헤더 섹션 */}
-              <div className="bg-primary text-white py-5">
+              <div className="bg-dark text-white py-5">
                   <div className="container px-5">
                       <h1 className="display-4 fw-bold text-center">상담 신청</h1>
                       <p className="lead text-center mt-3">
@@ -237,7 +237,7 @@ import { useState } from 'react'
                                       <div className="d-grid">
                                           <button
                                               type="submit"
-                                              className="btn btn-primary btn-lg"
+                                              className="btn btn-dark btn-lg"
                                               disabled={isSubmitting}
                                           >
                                               {isSubmitting ? '제출 중...' : '상담 신청'}
