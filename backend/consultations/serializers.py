@@ -31,17 +31,19 @@ class ConsultationSerializer(serializers.ModelSerializer):
         
     def create(self, validated_data):
         """상담 생성 시 비밀번호 해시화 및 파일 저장"""
+        
+        # 파일 데이터 분리
         uploaded_files = validated_data.pop('uploaded_files', [])
         password = validated_data.pop('password')
         
-        # 상담 생성
+        # 상담 객체 생성
         consultation = Consultation.objects.create(**validated_data)
         consultation.set_password(password)     # 비밀번호 해시화
-        consultation.save()
+        consultation.save()                     # DB에 저장        
         
         # 첨부파일 저장
         for file in uploaded_files:
-            ConsultationFile.objects.create(consultation=consultation, file=file)
+            ConsultationFile.objects.create(consultation=consultation, file=file)   # DB에 저장
         
         return consultation
         
