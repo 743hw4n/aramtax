@@ -16,7 +16,7 @@ trap cleanup INT TERM EXIT
 # 백엔드
 echo "Django 백엔드 시작"
 cd backend
-./aram/bin/python manage.py runserver &
+./aramtax/bin/python manage.py runserver &
 cd ..
 
 sleep 2
