@@ -12,6 +12,18 @@ class Consultation(models.Model):
         ('comprehensive_income', '종합소득세'),
         ('other', '기타'),
     ]
+    STATUS_CHOICES = [
+        ('pending', '접수대기'),
+        ('in_progress', '진행중'),
+        ('completed', '완료'),
+    ]
+    
+    status = models.CharField(
+        max_length=20, 
+        choices=STATUS_CHOICES, 
+        default='pending',
+        verbose_name='상담 상태'
+    )
     
     # 필드 정의
     consultation_type = models.CharField(
