@@ -1,7 +1,7 @@
 ---
-name: Bug report
+name: Fix
 about: 버그 리포트 작성
-title: "[Bug] "
+title: "fix: "
 labels: bug
 ---
 
