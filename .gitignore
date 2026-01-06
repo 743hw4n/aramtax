@@ -1,14 +1,18 @@
 # env
 .env
 
-# Virtual Environment
-/backend/aram/
-
 # IDE
 .vscode/
 
 # DB
 db.sqlite3
+
+
+# Virtual Environment
+/backend/aram/
+
+# Media
+/backend/media/
 
 # Node
 node_modules/
