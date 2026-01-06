@@ -24,7 +24,7 @@ class ConsultationSerializer(serializers.ModelSerializer):
         model = Consultation
         fields = [
             'id', 'consultation_type', 'name', 'email', 'phone',
-            'password', 'message', 'files', 'uploaded_files', 
+            'password', 'message', 'status', 'files', 'uploaded_files', 
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'files', 'created_at', 'updated_at']

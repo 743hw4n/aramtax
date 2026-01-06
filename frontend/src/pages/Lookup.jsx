@@ -20,6 +20,21 @@ import { useState } from 'react'
           }
           return types[type] || type
       }
+      // 상태 뱃지 색상 함수
+      const getStatusBadge = (status) => {
+        const statusMap = {
+            'pending' : { text: '접수대기', className: 'bg-warning text-dark' },
+            'in_progress': { text: '진행중', className: 'bg-primary' },
+            'completed' : { text: '완료', className: 'bg-success'}
+        }
+        const statusInfo = statusMap[status] || statusMap['pending']
+
+        return (
+            <span className={`badge ${statusInfo.className}`}>
+                {statusInfo.text}
+            </span>
+        )
+      }
 
       // 날짜 포맷팅
       const formatDate = (dateString) => {
@@ -188,7 +203,7 @@ import { useState } from 'react'
                                                       신청일: {formatDate(consultation.created_at)}
                                                   </span>
                                               </div>
-                                              <span className="badge bg-success">접수완료</span>
+                                              {getStatusBadge(consultation.status)}
                                           </div>
 
                                           {/* 카드 본문 */}
