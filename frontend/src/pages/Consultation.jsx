@@ -235,7 +235,7 @@ function Consultation() {
                                             className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-stone-200 rounded-xl cursor-pointer hover:bg-stone-50 hover:border-stone-300 transition-all"
                                         >
                                             <CloudArrowUpIcon className="h-8 w-8 text-stone-400 mb-2" />
-                                            <span className="text-sm text-stone-500">클릭하여 파일을 선택하거나 드래그하세요</span>
+                                            <span className="text-sm text-stone-500">클릭하여 파일을 선택하세요 (드래그 향후 구현)</span>
                                             <span className="text-xs text-stone-400 mt-1">(여러 파일 선택 가능)</span>
                                         </label>
                                     </div>
