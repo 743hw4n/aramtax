@@ -30,12 +30,12 @@ function Home() {
                 >
                   서비스 보기
                 </a>
-                <a 
-                  className="px-10 py-4 rounded-full border border-stone-600 text-stone-300 font-bold hover:bg-stone-800 hover:text-stone-100 transition-all duration-300 text-center" 
-                  href="/consultation"
+                <Link
+                  to="/consultation"
+                  className="px-10 py-4 rounded-full border border-stone-600 text-stone-300 font-bold hover:bg-stone-800 hover:text-stone-100 transition-all duration-300 text-center"
                 >
                   상담 신청
-                </a>
+                </Link>
               </div>
             </div>
             <div className="lg:w-1/2 w-full max-w-lg lg:max-w-none">
@@ -118,12 +118,12 @@ function Home() {
                 망설이지 말고 문의하십시오. 비밀 유지를 원칙으로 <br className="hidden md:block" />
                 성심껏 상담해 드립니다.
               </p>
-              <a 
-                className="inline-block px-12 py-5 rounded-full bg-stone-100 text-[#262422] font-bold text-lg hover:bg-white transition-all duration-300 shadow-2xl" 
-                href="/consultation"
+              <Link
+                to="/consultation"
+                className="inline-block px-12 py-5 rounded-full bg-stone-100 text-[#262422] font-bold text-lg hover:bg-white transition-all duration-300 shadow-2xl"
               >
                 비공개 상담 신청
-              </a>
+              </Link>
             </div>
           </div>
         </div>
