@@ -79,7 +79,8 @@ class Consultation(models.Model):
             self.status = 'completed'
         # 답변이 삭제된 경우
         elif not self.admin_response:
-            self.responded_at = None
+            self.responded_at = None    # 답변일시 초기화
+            self.status = 'in_progress' # 답변이 없는 경우 상태를 진행중으로 변경
         
         super().save(*args, **kwargs)
             
