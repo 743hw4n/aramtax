@@ -9,4 +9,5 @@ labels: enhancement
 
 ## ToDo
 
-## Others
+## Checklist
+- [] 체크리스트 작성
