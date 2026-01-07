@@ -1,5 +1,7 @@
 import { useState } from 'react'
-  import axios from 'axios'
+import axios from 'axios'
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 function Lookup() {
     const [email, setEmail] = useState('')
@@ -57,7 +59,7 @@ function Lookup() {
 
         try {
             const response = await axios.post(
-                'http://localhost:8000/api/consultations/lookup/',
+                `${API_BASE_URL}/api/consultations/lookup/`,
                 { email, password }
             )
             setConsultations(response.data)
@@ -256,7 +258,7 @@ function Lookup() {
                                                             <li key={index} className="list-group-item px-0">
                                                                 <i className="bi bi-file-earmark-text me-2"></i>
                                                                 <a 
-                                                                    href={`http://localhost:8000${file.file}`}
+                                                                    href={`${API_BASE_URL}${file.file}`}
                                                                     target="_blank"
                                                                     rel="noopener noreferrer"
                                                                     className="text-decoration-none"
