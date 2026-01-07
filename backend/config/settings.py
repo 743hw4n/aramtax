@@ -137,7 +137,7 @@ if USE_S3:
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     
     # S3 정적 파일/미디어 파일 경로 설정
-    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATICFILES_STORAGE = 'config.storages.StaticStorage'
     DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
     
     # URL 설정
