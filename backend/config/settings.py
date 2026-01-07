@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'rest_framework',   # DRF
     'corsheaders',      # CORS 헤더
     'consultations',    # 상담 앱
-    'storage',          # django-storages
+    'storages',          # django-storages
 ]
 
 MIDDLEWARE = [
