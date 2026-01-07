@@ -28,7 +28,7 @@ class ConsultationSerializer(serializers.ModelSerializer):
             'files', 'uploaded_files',
             'created_at', 'responded_at', 'updated_at', 
         ]
-        read_only_fields = ['id', 'files', 'created_at', 'responded_at', 'updated_at']
+        read_only_fields = ['id', 'files', 'status', 'created_at', 'responded_at', 'updated_at']
         
     def create(self, validated_data):
         """상담 생성 시 비밀번호 해시화 및 파일 저장"""
