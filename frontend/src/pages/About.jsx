@@ -28,11 +28,10 @@ function About() {
           <div className="flex flex-col lg:flex-row items-center gap-16">
             <div className="lg:w-1/2">
               <div className="relative">
-                <div className="absolute -inset-4 bg-stone-200 rounded-xl transform rotate-2"></div>
-                <img 
-                  className="relative rounded-lg shadow-xl w-full object-cover grayscale brightness-105" 
-                  src="https://dummyimage.com/600x400/44403c/a8a29e" 
-                  alt="세무법인 아람 사무실" 
+                <img
+                  className="rounded-lg shadow-xl w-full object-cover grayscale brightness-105"
+                  src="https://dummyimage.com/600x400/44403c/a8a29e"
+                  alt="세무법인 아람 사무실"
                 />
               </div>
             </div>

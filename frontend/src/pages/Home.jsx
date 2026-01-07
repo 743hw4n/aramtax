@@ -40,11 +40,10 @@ function Home() {
             </div>
             <div className="lg:w-1/2 w-full max-w-lg lg:max-w-none">
               <div className="relative">
-                <div className="absolute -inset-4 bg-stone-500/10 rounded-full blur-3xl"></div>
-                <img 
-                  className="relative rounded-2xl shadow-2xl w-full object-cover grayscale border border-stone-700 brightness-105" 
-                  src="https://dummyimage.com/800x600/44403c/a8a29e" 
-                  alt="Professional Tax Firm" 
+                <img
+                  className="rounded-lg shadow-xl w-full object-cover grayscale brightness-105"
+                  src="https://dummyimage.com/800x600/44403c/a8a29e"
+                  alt="Professional Tax Firm"
                 />
               </div>
             </div>
