@@ -10,9 +10,9 @@ import Lookup from './pages/Lookup'
   function App() {
       return (
           <BrowserRouter>
-              <div className="d-flex flex-column min-vh-100">
+              <div className="flex flex-col min-h-screen">
                   <Navbar />
-                  <main className="flex-grow-1">
+                  <main className="flex-grow">
                       <Routes>
                           <Route path="/" element={<Home />} />
                           <Route path="/about" element={<About />} />
