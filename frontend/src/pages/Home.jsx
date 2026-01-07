@@ -7,7 +7,7 @@ function Home() {
       {/* Hero Section - 메인 배너 */}
       <header className="bg-[#262422] py-24 lg:py-36 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#44403c,transparent)] opacity-40"></div>
-        <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div className="absolute inset-0 opacity-5 bg-[url('/assets/dark-wood.png')]"></div>
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
