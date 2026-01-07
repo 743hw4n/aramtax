@@ -78,7 +78,7 @@ function Consultation() {
             {/* 헤더 섹션 */}
             <div className="bg-[#262422] py-24 relative overflow-hidden">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#44403c,transparent)] opacity-40"></div>
-                <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                <div className="absolute inset-0 opacity-5 bg-[url('/assets/dark-wood.png')]"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <span className="text-stone-400 font-bold tracking-[0.3em] uppercase text-xs mb-4 block text-center">Get in Touch</span>
                     <h1 className="text-4xl lg:text-5xl font-bold text-stone-100 text-center font-serif">상담 신청</h1>

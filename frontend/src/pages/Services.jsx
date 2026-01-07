@@ -7,7 +7,7 @@ function Services() {
             {/* Header Section - 페이지 제목 */}
             <header className="py-24 lg:py-32 bg-[#262422] relative overflow-hidden">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#44403c,transparent)] opacity-40"></div>
-                <div className="absolute inset-0 opacity-5 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                <div className="absolute inset-0 opacity-5 bg-[url('/assets/dark-wood.png')]"></div>
                 
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                     <span className="text-stone-400 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Our Expertise</span>
