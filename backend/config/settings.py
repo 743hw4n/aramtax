@@ -10,7 +10,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', '').split(',') if h.strip()]
+CORS_ALLOWED_ORIGINS = [o.strip() for o in os.getenv('CORS_ALLOWED_ORIGINS', '').split(',') if o.strip()]
+USE_S3 = os.getenv('USE_S3', 'False') == 'True'
+USE_POSTGRES = os.getenv('USE_POSTGRES', 'False') == 'True'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,6 +26,7 @@ INSTALLED_APPS = [
     'rest_framework',   # DRF
     'corsheaders',      # CORS 헤더
     'consultations',    # 상담 앱
+    'storages',          # django-storages
 ]
 
 MIDDLEWARE = [
@@ -56,12 +60,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -91,22 +89,73 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# CORS 설정
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:5173',
-]   
 
 # REST FRAMEWORK 설정
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',  # 세션 쿠기 기반 인증
+        'rest_framework.authentication.BasicAuthentication',    # HTTP 내장 기본 인증
+    ],  
 }
 
 # Media files (업로드 파일 저장)
 MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
 MEDIA_ROOT = BASE_DIR / 'media'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+if USE_S3:
+    # AWS 필수 환경 변수 검증
+    required_aws_vars = ['AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_STORAGE_BUCKET_NAME']
+    missing_vars = [var for var in required_aws_vars if not os.getenv(var)]
+    if missing_vars:
+        raise ValueError(
+            f"USE_S3=True이지만 다음 환경 변수가 누락되었습니다: {', '.join(missing_vars)}"
+        )
+    
+    # AWS 설정
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'ap-northeast-2')
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    
+    # S3 정적 파일/미디어 파일 경로 설정
+    STATICFILES_STORAGE = 'config.storages.StaticStorage'
+    DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
+    
+    # URL 설정
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+    
+if USE_POSTGRES: 
+    # PostgreSQL 검증
+    required_postgres_vars = ['POSTGRES_DB', 'POSTGRES_USER', 'POSTGRES_PASSWORD', 'POSTGRES_HOST']
+    missing_vars = [var for var in required_postgres_vars if not os.getenv(var)]
+    if missing_vars:
+        raise ValueError(
+            f"USE_POSTGRES=True이지만 다음 환경 변수가 누락되었습니다: {', '.join(missing_vars)}"
+        )
+    
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.getenv('POSTGRES_DB'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv('POSTGRES_HOST'),
+            'PORT': os.getenv('POSTGRES_PORT', '5432'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }

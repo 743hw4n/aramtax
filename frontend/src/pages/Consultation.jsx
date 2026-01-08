@@ -3,6 +3,8 @@ import axios from 'axios'
 import { CheckCircleIcon as CheckCircleSolid, ExclamationCircleIcon as ExclamationCircleSolid } from '@heroicons/react/24/solid'
 import { CloudArrowUpIcon, DocumentTextIcon, LockClosedIcon, ClockIcon, IdentificationIcon } from '@heroicons/react/24/outline'
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
 function Consultation() {
     const [formData, setFormData] = useState({
         consultation_type: 'corporate_tax',
@@ -46,7 +48,7 @@ function Consultation() {
                 formDataToSend.append('uploaded_files', file)
             })
 
-            await axios.post('http://localhost:8000/api/consultations/', formDataToSend)
+            await axios.post(`${API_BASE_URL}/api/consultations/`, formDataToSend)
 
             setSubmitStatus({
                 type: 'success',

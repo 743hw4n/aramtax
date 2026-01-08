@@ -2,18 +2,32 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.permissions import IsAdminUser, AllowAny
 from .models import Consultation
 from .serializers import ConsultationSerializer, ConsultationLookupSerializer
 
 class ConsultationViewSet(viewsets.ModelViewSet):
     """
     상담 신청 API
-    CRUD 기능 제공 및 이메일과 비밀번호로 상담 내역 조회 기능 포함
+    - create, lookup: 인증 불필요 (공개)
+    - list, retrieve, update, destroy: 관리자 전용
     """
 
     queryset = Consultation.objects.all()           # 모든 Consultation 객체
     serializer_class = ConsultationSerializer       # 데이터 변환에 사용할 시리얼라이저
     parser_classes = [MultiPartParser, JSONParser]  # 파일 업로드 및 JSON 데이터 파서
+
+    def get_permissions(self):
+        """
+        액션별로 다른 권한 설정
+        - create, lookup: 누구나 접근 가능 (상담 신청, 자신의 상담 조회)
+        - 나머지(list, retrieve, update, destroy): 관리자만 접근 가능
+        """
+        if self.action in ['create', 'lookup']:
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
     
     def create(self, request, *args, **kwargs):
         """상담 신청 생성"""
