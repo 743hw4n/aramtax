@@ -97,9 +97,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',  # 세션 쿠기 기반 인증
-        'rest_framework.authentication.BasicAuthentication',    # HTTP 내장 기본 인증
-    ],  
+        'rest_framework.authentication.BasicAuthentication',    # HTTP 내장 기본 인증 (관리자용)
+    ],
 }
 
 # Media files (업로드 파일 저장)
