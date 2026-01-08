@@ -13,6 +13,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
 USE_S3 = os.getenv('USE_S3', 'False') == 'True'
+USE_POSTGRES = os.getenv('USE_POSTGRES', 'False') == 'True'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,7 +60,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-if not DEBUG: 
+if USE_POSTGRES: 
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -106,14 +107,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# CORS 설정
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://localhost:5173',
-]   
 
 # REST FRAMEWORK 설정
 REST_FRAMEWORK = {
