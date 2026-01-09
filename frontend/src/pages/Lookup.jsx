@@ -26,9 +26,9 @@ function Lookup() {
 
     const getStatusBadge = (status) => {
         const statusMap = {
-            'pending' : { text: '접수대기', className: 'bg-stone-100 text-stone-600' },
+            'pending': { text: '접수대기', className: 'bg-stone-100 text-stone-600' },
             'in_progress': { text: '진행중', className: 'bg-[#262422] text-stone-100' },
-            'completed' : { text: '완료', className: 'bg-green-50 text-green-700 border border-green-100'}
+            'completed': { text: '완료', className: 'bg-green-50 text-green-700 border border-green-100' }
         }
         const statusInfo = statusMap[status] || statusMap['pending']
 
@@ -77,17 +77,17 @@ function Lookup() {
     return (
         <div className="min-h-screen bg-[#fafaf9]">
             {/* Header Section */}
-            <header className="py-24 lg:py-32 bg-[#262422] relative overflow-hidden">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#44403c,transparent)] opacity-40"></div>
-                <div className="absolute inset-0 opacity-5 bg-[url('/assets/dark-wood.png')]"></div>
-                
+            <header className="py-24 lg:py-32 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('/assets/lookup-bg.avif')] bg-cover bg-center"></div>
+                <div className="absolute inset-0 bg-black/60"></div>
+
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <span className="text-stone-400 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Status Check</span>
                     <h1 className="text-4xl lg:text-5xl font-bold text-stone-100 mb-6 font-serif">
                         상담 내역 조회
                     </h1>
                     <p className="text-lg text-stone-400 max-w-xl mx-auto leading-relaxed font-light">
-                        상담 신청 시 입력하신 이메일과 비밀번호로 <br className="hidden md:block"/>
+                        상담 신청 시 입력하신 이메일과 비밀번호로 <br className="hidden md:block" />
                         현재 진행 상황을 실시간으로 확인하세요.
                     </p>
                 </div>
@@ -198,7 +198,7 @@ function Lookup() {
                                                     </div>
                                                 </div>
                                             )}
-                                            
+
                                             {/* 관리자 답변 */}
                                             {consultation.admin_response && (
                                                 <div className="mb-8 border-t border-stone-100 pt-8">
@@ -217,7 +217,7 @@ function Lookup() {
                                                     )}
                                                 </div>
                                             )}
-                                            
+
                                             {/* 첨부 파일 */}
                                             {consultation.files && consultation.files.length > 0 && (
                                                 <div className="border-t border-stone-100 pt-8">

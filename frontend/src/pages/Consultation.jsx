@@ -78,9 +78,9 @@ function Consultation() {
     return (
         <div className="min-h-screen bg-[#fafaf9]">
             {/* 헤더 섹션 */}
-            <div className="bg-[#262422] py-24 relative overflow-hidden">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#44403c,transparent)] opacity-40"></div>
-                <div className="absolute inset-0 opacity-5 bg-[url('/assets/dark-wood.png')]"></div>
+            <div className="py-24 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('/assets/consultation-hero.jpg')] bg-cover bg-center"></div>
+                <div className="absolute inset-0 bg-black/60"></div>
                 <div className="container mx-auto px-4 relative z-10">
                     <span className="text-stone-400 font-bold tracking-[0.3em] uppercase text-xs mb-4 block text-center">Get in Touch</span>
                     <h1 className="text-4xl lg:text-5xl font-bold text-stone-100 text-center font-serif">상담 신청</h1>
@@ -98,11 +98,10 @@ function Consultation() {
                         <div className="p-8 md:p-12">
                             {/* 상태 메시지 */}
                             {submitStatus && (
-                                <div className={`p-4 rounded-xl mb-8 flex items-center gap-3 ${
-                                    submitStatus.type === 'success'
-                                    ? 'bg-green-50 text-green-700 border border-green-100'
-                                    : 'bg-red-50 text-red-700 border border-red-100'
-                                }`}>
+                                <div className={`p-4 rounded-xl mb-8 flex items-center gap-3 ${submitStatus.type === 'success'
+                                        ? 'bg-green-50 text-green-700 border border-green-100'
+                                        : 'bg-red-50 text-red-700 border border-red-100'
+                                    }`}>
                                     {submitStatus.type === 'success' ? (
                                         <CheckCircleSolid className="h-5 w-5" />
                                     ) : (

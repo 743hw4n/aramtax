@@ -5,18 +5,17 @@ function About() {
   return (
     <div className="font-sans text-stone-800 bg-[#fafaf9]">
       {/* Header Section - 페이지 제목 */}
-      <header className="py-24 lg:py-32 bg-[#262422] relative overflow-hidden">
-        {/* 은은한 조명 효과 */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#44403c,transparent)] opacity-40"></div>
-        <div className="absolute inset-0 opacity-5 bg-[url('/assets/dark-wood.png')]"></div>
-        
+      <header className="py-24 lg:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/assets/about-hero.png')] bg-cover bg-center"></div>
+        <div className="absolute inset-0 bg-black/60"></div>
+
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <span className="text-stone-400 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">About Us</span>
           <h1 className="text-4xl lg:text-5xl font-bold text-stone-100 mb-6 font-serif">
             세무법인 아람을 소개합니다
           </h1>
           <p className="text-lg text-stone-400 max-w-2xl mx-auto leading-relaxed font-light">
-            20년 경력의 전문 세무사가 여러분의 든든한 파트너가 되어드립니다. <br className="hidden md:block"/>
+            20년 경력의 전문 세무사가 여러분의 든든한 파트너가 되어드립니다. <br className="hidden md:block" />
             신뢰와 원칙을 바탕으로 고객의 가치를 최우선으로 생각합니다.
           </p>
         </div>
@@ -74,7 +73,7 @@ function About() {
             <h2 className="text-3xl font-bold text-[#262422] font-serif mb-4">Core Values</h2>
             <p className="text-stone-500">아람을 선택해야 하는 변치 않는 이유입니다.</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               { icon: TrophyIcon, title: "전문성", desc: "20년 이상의 세무 경험을 바탕으로 한 정확하고 깊이 있는 서비스" },
@@ -106,7 +105,7 @@ function About() {
             <h2 className="text-3xl font-bold text-[#262422] font-serif mb-4">Professional Team</h2>
             <p className="text-stone-500">풍부한 경험과 전문성을 갖춘 세무사들이 함께합니다.</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {[
               { name: "김세무", role: "대표 세무사", exp: "경력 25년 / 법인세 및 국제조세" },
@@ -115,10 +114,10 @@ function About() {
             ].map((member, index) => (
               <div key={index} className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-stone-100 text-center group">
                 <div className="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-stone-100 group-hover:border-[#262422] transition-colors duration-300">
-                  <img 
-                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
-                    src={`https://dummyimage.com/300x300/${index === 0 ? '292524' : index === 1 ? '44403c' : '57534e'}/a8a29e`} 
-                    alt={member.name} 
+                  <img
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                    src={`https://dummyimage.com/300x300/${index === 0 ? '292524' : index === 1 ? '44403c' : '57534e'}/a8a29e`}
+                    alt={member.name}
                   />
                 </div>
                 <h3 className="text-xl font-bold text-[#262422] mb-1 font-serif">{member.name}</h3>
