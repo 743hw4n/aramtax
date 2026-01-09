@@ -9,7 +9,7 @@ function Services() {
                 <div className="absolute inset-0 bg-[url('/assets/services-bg.avif')] bg-cover bg-center"></div>
                 <div className="absolute inset-0 bg-black/60"></div>
 
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative zs-10 text-center">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
                     <span className="text-stone-400 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Our Expertise</span>
                     <h1 className="text-4xl lg:text-5xl font-bold text-stone-100 mb-6 font-serif">
                         전문 세무 서비스
