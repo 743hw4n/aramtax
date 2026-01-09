@@ -5,17 +5,17 @@ function Services() {
     return (
         <div className="font-sans text-stone-800 bg-[#fafaf9]">
             {/* Header Section - 페이지 제목 */}
-            <header className="py-24 lg:py-32 bg-[#262422] relative overflow-hidden">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#44403c,transparent)] opacity-40"></div>
-                <div className="absolute inset-0 opacity-5 bg-[url('/assets/dark-wood.png')]"></div>
-                
-                <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <header className="py-24 lg:py-32 relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('/assets/services-bg.avif')] bg-cover bg-center"></div>
+                <div className="absolute inset-0 bg-black/60"></div>
+
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative zs-10 text-center">
                     <span className="text-stone-400 font-bold tracking-[0.3em] uppercase text-xs mb-4 block">Our Expertise</span>
                     <h1 className="text-4xl lg:text-5xl font-bold text-stone-100 mb-6 font-serif">
                         전문 세무 서비스
                     </h1>
                     <p className="text-lg text-stone-400 max-w-2xl mx-auto leading-relaxed font-light">
-                        고객 맞춤형 세무 솔루션으로 <br className="hidden md:block"/>
+                        고객 맞춤형 세무 솔루션으로 <br className="hidden md:block" />
                         안정적이고 성공적인 사업 운영을 지원합니다.
                     </p>
                 </div>
@@ -127,7 +127,7 @@ function Services() {
                 <div className="container mx-auto px-4">
                     <div className="bg-[#262422] rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
                         <div className="absolute top-0 right-0 w-96 h-96 bg-stone-500/5 rounded-full blur-3xl"></div>
-                        
+
                         <div className="relative z-10">
                             <h2 className="text-3xl md:text-4xl font-bold text-stone-100 mb-6 font-serif">서비스가 필요하신가요?</h2>
                             <p className="text-stone-400 mb-10 max-w-xl mx-auto font-light leading-relaxed text-lg">

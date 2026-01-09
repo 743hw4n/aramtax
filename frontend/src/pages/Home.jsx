@@ -5,10 +5,10 @@ function Home() {
   return (
     <div className="font-sans text-stone-800 bg-[#fafaf9]">
       {/* Hero Section - 메인 배너 */}
-      <header className="bg-[#262422] py-24 lg:py-36 relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-[radial-gradient(circle_at_50%_-20%,#44403c,transparent)] opacity-40"></div>
-        <div className="absolute inset-0 opacity-5 bg-[url('/assets/dark-wood.png')]"></div>
-        
+      <header className="py-24 lg:py-36 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/assets/home-hero.jpg')] bg-cover bg-center"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40"></div>
+
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-16">
             <div className="lg:w-1/2 text-center lg:text-left">
@@ -24,8 +24,8 @@ function Home() {
                 고객의 권리를 보호하고 최선의 결과를 약속드립니다.
               </p>
               <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
-                <a 
-                  className="px-10 py-4 rounded-full bg-stone-100 text-[#262422] font-bold hover:bg-white transition-all duration-300 shadow-xl shadow-black/20 text-center" 
+                <a
+                  className="px-10 py-4 rounded-full bg-stone-100 text-[#262422] font-bold hover:bg-white transition-all duration-300 shadow-xl shadow-black/20 text-center"
                   href="#services"
                 >
                   서비스 보기
@@ -36,15 +36,6 @@ function Home() {
                 >
                   상담 신청
                 </Link>
-              </div>
-            </div>
-            <div className="lg:w-1/2 w-full max-w-lg lg:max-w-none">
-              <div className="relative">
-                <img
-                  className="rounded-lg shadow-xl w-full object-cover grayscale brightness-105"
-                  src="https://dummyimage.com/800x600/44403c/a8a29e"
-                  alt="Professional Tax Firm"
-                />
               </div>
             </div>
           </div>
@@ -59,7 +50,7 @@ function Home() {
             <h2 className="text-3xl lg:text-4xl font-bold text-[#262422] font-serif mb-6">본질에 집중하는 세무 서비스</h2>
             <div className="w-12 h-0.5 bg-stone-300 mx-auto"></div>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
             {[
               { icon: BuildingOfficeIcon, title: "법인세", desc: "기업의 가치를 높이는 전략적 세무 조정" },
@@ -85,17 +76,18 @@ function Home() {
       </section>
 
       {/* Testimonial Section - 고객 후기 */}
-      <div className="py-32 bg-[#fafaf9] border-y border-stone-200/60">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto">
+      <div className="py-32 relative bg-cover bg-center bg-fixed" style={{ backgroundImage: "url('/assets/home-testimonial.jpg')" }}>
+        <div className="absolute inset-0 bg-black/80"></div>
+        <div className="container mx-auto px-4 text-center relative z-10">
+          <div className="max-w-3xl mx-auto bg-black/30 backdrop-blur-sm p-12 rounded-3xl border border-white/10 shadow-2xl">
             <div className="flex justify-center mb-8">
-              <ChatBubbleBottomCenterTextIcon className="h-12 w-12 text-stone-200" />
+              <ChatBubbleBottomCenterTextIcon className="h-12 w-12 text-stone-400" />
             </div>
-            <p className="text-2xl lg:text-3xl font-serif text-[#262422] leading-relaxed mb-10 italic">
-              "법적인 문제라 예민했는데, 차분하고 논리적인 설명 덕분에 <br className="hidden md:block"/>
+            <p className="text-2xl lg:text-3xl font-serif text-stone-100 leading-relaxed mb-10 italic">
+              "법적인 문제라 예민했는데, 차분하고 논리적인 설명 덕분에 <br className="hidden md:block" />
               안심하고 맡길 수 있었습니다."
             </p>
-            <div className="text-stone-400 text-xs tracking-[0.4em] uppercase font-bold">
+            <div className="text-stone-500 text-xs tracking-[0.4em] uppercase font-bold">
               - Trust & Integrity -
             </div>
           </div>
@@ -105,10 +97,12 @@ function Home() {
       {/* CTA Section - 상담 신청 유도 */}
       <section className="py-32 bg-[#fafaf9]">
         <div className="container mx-auto px-4">
-          <div className="bg-[#262422] rounded-[3rem] p-12 md:p-24 text-center shadow-3xl relative overflow-hidden">
-             {/* 데코레이션 */}
-            <div className="absolute top-0 right-0 w-96 h-96 bg-stone-500/5 rounded-full blur-3xl"></div>
-            
+          <div className="bg-[#262422] rounded-[3rem] p-12 md:p-24 text-center shadow-3xl relative overflow-hidden group">
+            <div className="absolute inset-0 bg-[url('/assets/home-cta.jpg')] bg-cover bg-center opacity-40 group-hover:opacity-50 group-hover:scale-110 transition-all duration-[2000ms] ease-in-out"></div>
+
+            {/* 데코레이션 */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-stone-500/10 rounded-full blur-3xl"></div>
+
             <div className="relative z-10 max-w-2xl mx-auto">
               <h2 className="text-3xl md:text-5xl font-bold text-stone-100 mb-8 font-serif leading-tight">
                 전문가의 도움이 <br />필요하십니까?

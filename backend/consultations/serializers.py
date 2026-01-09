@@ -57,6 +57,3 @@ class ConsultationLookupSerializer(serializers.Serializer):
     # 상담 조회 시 이메일과 비밀번호로 조회
     email = serializers.EmailField()
     password = serializers.CharField()
-                    
-            
-    
