@@ -1,51 +1,40 @@
-from rest_framework import viewsets, status
-from rest_framework.decorators import action
+from rest_framework import status
+from rest_framework.generics import CreateAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-from rest_framework.permissions import IsAdminUser, AllowAny
+from rest_framework.parsers import MultiPartParser, JSONParser
+from rest_framework.permissions import AllowAny
 from .models import Consultation
 from .serializers import ConsultationSerializer, ConsultationLookupSerializer
 
-class ConsultationViewSet(viewsets.ModelViewSet):
-    """
-    상담 신청 API
-    - create, lookup: 인증 불필요 (공개)
-    - list, retrieve, update, destroy: 관리자 전용
-    """
-
-    queryset = Consultation.objects.all()           # 모든 Consultation 객체
-    serializer_class = ConsultationSerializer       # 데이터 변환에 사용할 시리얼라이저
-    parser_classes = [MultiPartParser, JSONParser]  # 파일 업로드 및 JSON 데이터 파서
-
-    def get_permissions(self):
-        """
-        액션별로 다른 권한 설정
-        - create, lookup: 누구나 접근 가능 (상담 신청, 자신의 상담 조회)
-        - 나머지(list, retrieve, update, destroy): 관리자만 접근 가능
-        """
-        if self.action in ['create', 'lookup']:
-            permission_classes = [AllowAny]
-        else:
-            permission_classes = [IsAdminUser]
-        return [permission() for permission in permission_classes]
+class ConsultationCreateView(CreateAPIView):
+    """POST /api/consultations/ - 상담 신청"""
+    
+    queryset = Consultation.objects.all()
+    serializer_class = ConsultationSerializer
+    parser_classes = [MultiPartParser, JSONParser]
+    permission_classes = [AllowAny]
     
     def create(self, request, *args, **kwargs):
-        """상담 신청 생성"""
-        serializer = self.get_serializer(data=request.data) # serializer 생성 (데이터 받기)
-        serializer.is_valid(raise_exception=True)           # 검증
-        self.perform_create(serializer)                      # DB에 저장 명령 
-        headers = self.get_success_headers(serializer.data) 
+        """상담 신청 생성"""            
+        serializer = self.get_serializer(data=request.data)     # serializer 생성 (데이터 받기)
+        serializer.is_valid(raise_exception=True)               # 검증
+        self.perform_create(serializer)                         # DB에 저장 명령
+        headers = self.get_success_headers(serializer.data)
         return Response(
-            {'message': '상담 신청이 완료되었습니다.', 'data': serializer.data}, 
+            {'message': '상담 신청이 완료되었습니다.', 'data': serializer.data},
             status=status.HTTP_201_CREATED,
             headers=headers
         )
+
+class ConsultationLookupView(APIView):
+    """POST /api/consultations/lookup/ - 상담 조회"""
+    permission_classes = [AllowAny]
     
-    @action(detail=False, methods=['post']) # 기본 제공되는 메서드(CRUD) 외에 추가 액션 정의
-    def lookup(self, request):
+    def post(self, request):
         """이메일과 비밀번호로 상담 내역 조회"""
-        lookup_serializer = ConsultationLookupSerializer(data=request.data)     # {'email': "hong@example.com', 'password': 'password123'}
-        lookup_serializer.is_valid(raise_exception=True)                        # 유효성 검사   
+        lookup_serializer = ConsultationLookupSerializer(data=request.data)     # {'email': example@gmail.com, 'password': 'password123'}
+        lookup_serializer.is_valid(raise_exception=True)                        # 유효성 검사
         
         # 검증된 데이터 사용
         email = lookup_serializer.validated_data['email']
@@ -64,7 +53,7 @@ class ConsultationViewSet(viewsets.ModelViewSet):
                     status=status.HTTP_404_NOT_FOUND
                 )
             # 일치하는 상담 내역 시리얼라이저로 반환
-            serializer = self.get_serializer(valid_consultations, many=True)
+            serializer = ConsultationSerializer(valid_consultations, many=True)
             return Response(serializer.data)
         except Consultation.DoesNotExist:
             return Response(

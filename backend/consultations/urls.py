@@ -1,11 +1,7 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import ConsultationViewSet
-
-# Router 설정: ViewSet을 자동으로 URL에 연결
-router = DefaultRouter()    # ViewSet의 메서드들을 자동으로 URL과 매칭
-router.register('', ConsultationViewSet, basename='consultations')  # ConsultationViewSet 등록
+from django.urls import path
+from .views import ConsultationCreateView, ConsultationLookupView
 
 urlpatterns = [
-    path('', include(router.urls)),     # 자동으로 /, /<id>/ 등의 URL 생성
+    path('', ConsultationCreateView.as_view(), name='consultation-create'),         # as_view() 메서드 호출로 클래스 기반 뷰를 뷰 함수로 변환
+    path('lookup/', ConsultationLookupView.as_view(), name='consultation-lookup'),
 ]
