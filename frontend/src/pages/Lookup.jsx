@@ -3,7 +3,7 @@ import axios from 'axios'
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid'
 import { MagnifyingGlassIcon, ClockIcon, DocumentTextIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 
 function Lookup() {
     const [email, setEmail] = useState('')

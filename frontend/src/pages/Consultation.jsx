@@ -3,7 +3,7 @@ import axios from 'axios'
 import { CheckCircleIcon as CheckCircleSolid, ExclamationCircleIcon as ExclamationCircleSolid } from '@heroicons/react/24/solid'
 import { CloudArrowUpIcon, DocumentTextIcon, LockClosedIcon, ClockIcon, IdentificationIcon } from '@heroicons/react/24/outline'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 
 function Consultation() {
     const [formData, setFormData] = useState({
