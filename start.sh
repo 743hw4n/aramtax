@@ -13,10 +13,22 @@ cleanup() {
 
 trap cleanup INT TERM EXIT
 
+CONDA_ENV=${CONDA_ENV:-aramtax}
+
+if command -v conda >/dev/null 2>&1; then
+  CONDA_BASE="$(conda info --base)"
+  # shellcheck source=/dev/null
+  source "$CONDA_BASE/etc/profile.d/conda.sh"
+  conda activate "$CONDA_ENV"
+else
+  echo "conda를 찾을 수 없습니다. conda를 설치하거나 활성화해주세요."
+  exit 1
+fi
+
 # 백엔드
 echo "Django 백엔드 시작"
 cd backend
-./aramtax/bin/python manage.py runserver &
+python manage.py runserver &
 cd ..
 
 sleep 2
