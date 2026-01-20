@@ -3,8 +3,6 @@ import axios from 'axios'
 import { ExclamationCircleIcon } from '@heroicons/react/24/solid'
 import { MagnifyingGlassIcon, ClockIcon, DocumentTextIcon, InformationCircleIcon } from '@heroicons/react/24/outline'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || ''
-
 function Lookup() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -58,7 +56,7 @@ function Lookup() {
 
         try {
             const response = await axios.post(
-                `${API_BASE_URL}/api/consultations/lookup/`,
+                '/api/consultations/lookup/',
                 { email, password }
             )
             setConsultations(response.data)
@@ -226,7 +224,7 @@ function Lookup() {
                                                         {consultation.files.map((file, index) => (
                                                             <a
                                                                 key={index}
-                                                                href={`${API_BASE_URL}${file.file}`}
+                                                                href={file.file}
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
                                                                 className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-lg text-xs text-stone-600 hover:border-[#262422] hover:text-[#262422] transition-all"
