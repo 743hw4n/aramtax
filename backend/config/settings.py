@@ -2,18 +2,17 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# .env 파일 로드
-load_dotenv()
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# 루트 .env 파일 로드 (aramtax/.env)
+load_dotenv(BASE_DIR.parent / '.env')
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', '').split(',') if h.strip()]
 CORS_ALLOWED_ORIGINS = [o.strip() for o in os.getenv('CORS_ALLOWED_ORIGINS', '').split(',') if o.strip()]
 USE_S3 = os.getenv('USE_S3', 'False') == 'True'
-USE_POSTGRES = os.getenv('USE_POSTGRES', 'False') == 'True'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -132,29 +131,21 @@ if USE_S3:
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
     
-if USE_POSTGRES: 
-    # PostgreSQL 검증
-    required_postgres_vars = ['POSTGRES_DB', 'POSTGRES_USER', 'POSTGRES_PASSWORD', 'POSTGRES_HOST']
-    missing_vars = [var for var in required_postgres_vars if not os.getenv(var)]
-    if missing_vars:
-        raise ValueError(
-            f"USE_POSTGRES=True이지만 다음 환경 변수가 누락되었습니다: {', '.join(missing_vars)}"
-        )
-    
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('POSTGRES_DB'),
-            'USER': os.getenv('POSTGRES_USER'),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-            'HOST': os.getenv('POSTGRES_HOST'),
-            'PORT': os.getenv('POSTGRES_PORT', '5432'),
-        }
+# PostgreSQL 설정
+required_postgres_vars = ['POSTGRES_DB', 'POSTGRES_USER', 'POSTGRES_PASSWORD', 'POSTGRES_HOST']
+missing_vars = [var for var in required_postgres_vars if not os.getenv(var)]
+if missing_vars:
+    raise ValueError(
+        f"다음 환경 변수가 누락되었습니다: {', '.join(missing_vars)}"
+    )
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
