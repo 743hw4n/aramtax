@@ -12,6 +12,12 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = [h.strip() for h in os.getenv('ALLOWED_HOSTS', '').split(',') if h.strip()]
 CORS_ALLOWED_ORIGINS = [o.strip() for o in os.getenv('CORS_ALLOWED_ORIGINS', '').split(',') if o.strip()]
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()]
+
+# HTTPS 프록시 (Cloudflare Tunnel) 인식 설정
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
 USE_S3 = os.getenv('USE_S3', 'False') == 'True'
 
 INSTALLED_APPS = [
@@ -21,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
     'rest_framework',   # DRF
     'corsheaders',      # CORS 헤더
     'consultations',    # 상담 앱
@@ -114,7 +120,7 @@ if USE_S3:
         raise ValueError(
             f"USE_S3=True이지만 다음 환경 변수가 누락되었습니다: {', '.join(missing_vars)}"
         )
-    
+
     # AWS 설정
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
@@ -122,15 +128,15 @@ if USE_S3:
     AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'ap-northeast-2')
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-    
+
     # S3 정적 파일/미디어 파일 경로 설정
     STATICFILES_STORAGE = 'config.storages.StaticStorage'
     DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
-    
+
     # URL 설정
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-    
+
 # PostgreSQL 설정
 required_postgres_vars = ['POSTGRES_DB', 'POSTGRES_USER', 'POSTGRES_PASSWORD', 'POSTGRES_HOST']
 missing_vars = [var for var in required_postgres_vars if not os.getenv(var)]
