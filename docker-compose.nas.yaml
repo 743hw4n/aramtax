@@ -23,7 +23,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./backend:/app
-      - ./backend:/app
       - ./data/media:/app/media
       - ./data/static:/app/staticfiles
     expose:
