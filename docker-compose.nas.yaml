@@ -1,0 +1,70 @@
+# NAS 배포용 (Cloudflare Tunnel 포함 + 로컬 저장소 사용)
+services:
+  # 1. Database
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: aramtax
+      POSTGRES_USER: aramtax
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aramtax"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  # 2. Backend (Django)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+      - ./data/media:/app/media
+    expose:
+      - "8000"
+    environment:
+      - DEBUG=False
+      - SECRET_KEY=${SECRET_KEY}
+      - ALLOWED_HOSTS=localhost,127.0.0.1,backend,hwan.cloud
+      - CORS_ALLOWED_ORIGINS=https://hwan.cloud,http://localhost:3000
+
+      # 로컬 스토리지 사용
+      - USE_S3=False
+
+      - POSTGRES_DB=aramtax
+      - POSTGRES_USER=aramtax
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+
+  # 3. Frontend (React + Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    volumes:
+      - ./data/media:/usr/share/nginx/html/media
+    environment:
+      - VITE_API_URL=https://hwan.cloud
+    depends_on:
+      - backend
+    restart: always
+
+  # 4. Cloudflare Tunnel
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-tunnel
+    restart: always
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
