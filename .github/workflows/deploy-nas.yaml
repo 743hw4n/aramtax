@@ -1,0 +1,31 @@
+name: Deploy to NAS
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-nas
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build and Deploy
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}
+        run: |
+          # Pull latest images if base images changed, build local images
+          docker compose -f docker-compose.nas.yaml up -d --build
+
+          # Cleanup unused images to save space on NAS
+          docker image prune -f
