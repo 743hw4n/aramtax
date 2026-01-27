@@ -15,8 +15,11 @@ CORS_ALLOWED_ORIGINS = [o.strip() for o in os.getenv('CORS_ALLOWED_ORIGINS', '')
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',') if o.strip()]
 
 # HTTPS 프록시 (Cloudflare Tunnel) 인식 설정
+# 1. 헤더가 'https'면 보안 연결로 간주
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# 2. Host 헤더를 신뢰 (localhost가 아닌 실제 도메인 인식)
 USE_X_FORWARDED_HOST = True
+# 3. Port 헤더를 신뢰 (8000이 아닌 443 포트 인식 -> 리다이렉트 문제 해결)
 USE_X_FORWARDED_PORT = True
 USE_S3 = os.getenv('USE_S3', 'False') == 'True'
 
