@@ -50,8 +50,8 @@ services:
       dockerfile: Dockerfile
       args:
         NGINX_CONF: nginx.nas.conf
-    ports:
-      - "3000:80"
+    expose:
+      - "80"
     volumes:
       - media_volume:/usr/share/nginx/html/media
       - static_volume:/usr/share/nginx/html/static
