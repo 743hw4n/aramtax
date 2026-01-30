@@ -6,26 +6,79 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_BACKEND: aramtax-backend
+  ECR_FRONTEND: aramtax-frontend
+
 concurrency:
   group: deploy-nas
   cancel-in-progress: false
 
 jobs:
+  # Build and Push Docker Images to ECR
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & Push Images
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          export ECR_REGISTRY=$ECR_REGISTRY
+          export ECR_BACKEND=$ECR_BACKEND
+          export ECR_FRONTEND=$ECR_FRONTEND
+
+          docker compose -f docker-compose.nas.yaml build
+          docker push ${ECR_REGISTRY}/${ECR_BACKEND}:latest
+          docker push ${ECR_REGISTRY}/${ECR_FRONTEND}:latest
+
+  # Deploy to NAS
   deploy:
+    needs: build-and-push
     runs-on: self-hosted
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build and Deploy
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Pull and Deploy
         env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}
         run: |
-          # Pull latest images if base images changed, build local images
-          docker compose -f docker-compose.nas.yaml up -d --build
+          export ECR_REGISTRY=$ECR_REGISTRY
+          export ECR_BACKEND=$ECR_BACKEND
+          export ECR_FRONTEND=$ECR_FRONTEND
 
-          # Cleanup unused images to save space on NAS
+          docker compose -f docker-compose.nas.yaml pull
+          docker compose -f docker-compose.nas.yaml up -d
+
+          # Cleanup
           docker image prune -f

@@ -18,6 +18,7 @@ services:
 
   # 2. Backend (Django)
   backend:
+    image: ${ECR_REGISTRY}/${ECR_BACKEND}:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -45,6 +46,7 @@ services:
 
   # 3. Frontend (React + Nginx)
   frontend:
+    image: ${ECR_REGISTRY}/${ECR_FRONTEND}:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile
