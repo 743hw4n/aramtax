@@ -73,6 +73,11 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Create Environment Files
+        run: |
+          echo "${{ secrets.ENV_PROD }}" > .env.prod
+          echo "${{ secrets.ENV_PROD_DB }}" > .env.prod.db
+
       - name: Pull and Deploy
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
