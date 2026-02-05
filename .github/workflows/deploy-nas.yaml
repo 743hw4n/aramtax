@@ -74,11 +74,13 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Create Environment Files
+        working-directory: ${{ github.workspace }}
         run: |
           echo "${{ secrets.ENV_PROD }}" > .env.prod
           echo "${{ secrets.ENV_PROD_DB }}" > .env.prod.db
 
       - name: Pull and Deploy
+        working-directory: ${{ github.workspace }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
