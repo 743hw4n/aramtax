@@ -1,11 +1,5 @@
 from .base import *
 
-DEBUG = False
-
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'backend', 'hwan.cloud']
-CORS_ALLOWED_ORIGINS = ['https://hwan.cloud']
-CSRF_TRUSTED_ORIGINS = ['https://hwan.cloud']
-
 # 프록시 헤더
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
@@ -18,18 +12,6 @@ SECURE_HSTS_PRELOAD = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
-
-# PostgreSQL (필수)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
-    }
-}
 
 # S3 스토리지 설정
 USE_S3 = os.getenv('USE_S3', 'False') == 'True'
@@ -46,4 +28,7 @@ if USE_S3:
     DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
 else:
     MEDIA_ROOT = BASE_DIR / 'media'
-    STATIC_ROOT = BASE_DIR / 'staticfiles'
+    STATIC_ROOT = BASE_DIR / 'static'
+
+# 이메일 설정
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

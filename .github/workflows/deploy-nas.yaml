@@ -16,7 +16,6 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Build and Push Docker Images to ECR
   build-and-push:
     runs-on: ubuntu-latest
 
@@ -30,23 +29,31 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build & Push Images
+      - name: Build & Push Backend
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          export ECR_REGISTRY=$ECR_REGISTRY
-          export ECR_BACKEND=$ECR_BACKEND
-          export ECR_FRONTEND=$ECR_FRONTEND
-
-          docker compose -f docker-compose.nas.yaml build
+          docker build \
+            --target prod \
+            -t ${ECR_REGISTRY}/${ECR_BACKEND}:latest \
+            ./backend
           docker push ${ECR_REGISTRY}/${ECR_BACKEND}:latest
+
+      - name: Build & Push Frontend
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker build \
+            --target prod \
+            -t ${ECR_REGISTRY}/${ECR_FRONTEND}:latest \
+            ./frontend
           docker push ${ECR_REGISTRY}/${ECR_FRONTEND}:latest
 
-  # Deploy to NAS
   deploy:
     needs: build-and-push
     runs-on: self-hosted
@@ -66,19 +73,23 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      - name: Create Environment Files
+        working-directory: ${{ github.workspace }}
+        run: |
+          echo "${{ secrets.ENV_PROD }}" > .env.prod
+          echo "${{ secrets.ENV_PROD_DB }}" > .env.prod.db
+
       - name: Pull and Deploy
+        working-directory: ${{ github.workspace }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          TUNNEL_TOKEN: ${{ secrets.TUNNEL_TOKEN }}
         run: |
           export ECR_REGISTRY=$ECR_REGISTRY
           export ECR_BACKEND=$ECR_BACKEND
           export ECR_FRONTEND=$ECR_FRONTEND
 
-          docker compose -f docker-compose.nas.yaml pull
-          docker compose -f docker-compose.nas.yaml up -d
+          docker compose -f docker-compose.prod.yaml pull
+          docker compose -f docker-compose.prod.yaml up -d --remove-orphans
 
           # Cleanup
           docker image prune -f
