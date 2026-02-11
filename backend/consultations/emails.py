@@ -25,7 +25,7 @@ def send_new_consultation_alert(consultation):
 
 def send_response_notification(consultation):
     """ 답변 완료 시 신청자에게 알림 이메일 전송 """
-    subject = f'[세무법인 아람] 상담 답변이 등록되었습니다'
+    subject = '[세무법인 아람] 상담 답변이 등록되었습니다'
     message = f"""
         {consultation.name}님, 안녕하세요.
 
