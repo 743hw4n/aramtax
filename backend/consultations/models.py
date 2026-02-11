@@ -77,6 +77,7 @@ class Consultation(models.Model):
         if self.admin_response and self.admin_response != prev_response:
             self.responded_at = timezone.now()
             self.status = 'completed'
+            self._response_changed = True
         # 답변이 삭제된 경우
         elif not self.admin_response:
             self.responded_at = None    # 답변일시 초기화
