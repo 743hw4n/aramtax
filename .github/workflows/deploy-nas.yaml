@@ -37,22 +37,26 @@ jobs:
       - name: Build & Push Backend
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build \
             --target prod \
             -t ${ECR_REGISTRY}/${ECR_BACKEND}:latest \
+            -t ${ECR_REGISTRY}/${ECR_BACKEND}:${IMAGE_TAG} \
             ./backend
-          docker push ${ECR_REGISTRY}/${ECR_BACKEND}:latest
+          docker push ${ECR_REGISTRY}/${ECR_BACKEND} --all-tags
 
       - name: Build & Push Frontend
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build \
             --target prod \
             -t ${ECR_REGISTRY}/${ECR_FRONTEND}:latest \
+            -t ${ECR_REGISTRY}/${ECR_FRONTEND}:${IMAGE_TAG} \
             ./frontend
-          docker push ${ECR_REGISTRY}/${ECR_FRONTEND}:latest
+          docker push ${ECR_REGISTRY}/${ECR_FRONTEND} --all-tags
 
   deploy:
     needs: build-and-push
@@ -83,10 +87,12 @@ jobs:
         working-directory: ${{ github.workspace }}
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           export ECR_REGISTRY=$ECR_REGISTRY
           export ECR_BACKEND=$ECR_BACKEND
           export ECR_FRONTEND=$ECR_FRONTEND
+          export IMAGE_TAG=$IMAGE_TAG
 
           docker compose -f docker-compose.prod.yaml pull
           docker compose -f docker-compose.prod.yaml up -d --remove-orphans
