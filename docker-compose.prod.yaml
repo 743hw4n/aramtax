@@ -17,6 +17,7 @@ services:
 
   # Backend
   backend:
+    image: ${ECR_REGISTRY}/${ECR_BACKEND}:${IMAGE_TAG:-latest}
     build:
       context: ./backend
       target: prod
@@ -36,6 +37,7 @@ services:
 
   # Frontend
   frontend:
+    image: ${ECR_REGISTRY}/${ECR_FRONTEND}:${IMAGE_TAG:-latest}
     build:
       context: ./frontend
       target: prod
