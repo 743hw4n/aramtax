@@ -1,12 +1,12 @@
 #!/bin/bash
-set -ueo pipefail
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../.env.prod"
 source "${SCRIPT_DIR}/../.env.prod.db"
 
 BACKUP_DATE=$(date +%Y-%m-%d)
-DB_CONTAINER="aramtax-db-prod-1"
+COMPOSE_FILE="${SCRIPT_DIR}/../docker-compose.prod.yaml"
 TMP_DIR="/tmp/aramtax-backup-${BACKUP_DATE}"
 
 mkdir -p "${TMP_DIR}"
@@ -15,7 +15,7 @@ echo "[$(date)] 백업 시작"
 
 # DB 백업
 echo "[$(date)] DB 백업 중 ..."
-docker exec "${DB_CONTAINER}" pg_dump \
+docker compose -f "${COMPOSE_FILE}" exec -T db-prod pg_dump \
     -U "${POSTGRES_USER}" \
     -d "${POSTGRES_DB}" \
     --clean --if-exists \
