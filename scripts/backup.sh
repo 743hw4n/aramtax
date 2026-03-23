@@ -18,6 +18,7 @@ echo "[$(date)] DB 백업 중 ..."
 docker exec "${DB_CONTAINER}" pg_dump \
     -U "${POSTGRES_USER}" \
     -d "${POSTGRES_DB}" \
+    --clean --if-exists \
     | gzip > "${TMP_DIR}/db-${BACKUP_DATE}.sql.gz"
 
 # 미디어 파일 백업
