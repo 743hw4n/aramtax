@@ -5,8 +5,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${SCRIPT_DIR}/../.env.prod"
 source "${SCRIPT_DIR}/../.env.prod.db"
 
-DB_CONTAINER="aramtax-db-prod-1"
-BACKEND_CONTAINER="aramtax-backend-1"
+COMPOSE_FILE="${SCRIPT_DIR}/../docker-compose.prod.yaml"
+
+cleanup() {
+  if [ "${BACKEND_STOPPED:-false}" = "true" ]; then
+    docker compose -f "${COMPOSE_FILE}" start backend
+  fi
+  rm -rf "${TMP_DIR}"
+}
+trap cleanup EXIT
 
 usage() {
   echo "사용법: $0 --db|--media|--all YYYY-MM-DD"
@@ -29,16 +36,15 @@ restore_db() {
     "${TMP_DIR}/db-${RESTORE_DATE}.sql.gz"
 
   echo "[$(date)] 백엔드 중지 중..."
-  docker stop "${BACKEND_CONTAINER}"
+  docker compose -f "${COMPOSE_FILE}" stop backend
+  BACKEND_STOPPED=true
 
   echo "[$(date)] DB 복구 중..."
   gunzip -c "${TMP_DIR}/db-${RESTORE_DATE}.sql.gz" | \
-    docker exec -i "${DB_CONTAINER}" psql \
+    docker compose -f "${COMPOSE_FILE}" exec -T db-prod psql \
       -U "${POSTGRES_USER}" \
-      -d "${POSTGRES_DB}"
-
-  echo "[$(date)] 백엔드 재시작 중..."
-  docker start "${BACKEND_CONTAINER}"
+      -d "${POSTGRES_DB}" \
+      -v ON_ERROR_STOP=1
 
   echo "[$(date)] DB 복구 완료"
 }
@@ -65,5 +71,4 @@ case "${MODE}" in
   *)       usage ;;
 esac
 
-rm -rf "${TMP_DIR}"
 echo "[$(date)] 복구 완료"
