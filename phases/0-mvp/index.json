@@ -1,0 +1,47 @@
+{
+  "project": "세무법인 아람",
+  "phase": "0-mvp",
+  "steps": [
+    {
+      "step": 0,
+      "name": "project-setup",
+      "status": "completed",
+      "summary": "docker-compose.yaml(dev), docker-compose.prod.yaml(prod) 구성. .env.example 템플릿, local.py에 EMAIL_BACKEND=console, entrypoint.sh(migrate+collectstatic) 설정."
+    },
+    {
+      "step": 1,
+      "name": "backend-consultation",
+      "status": "completed",
+      "summary": "Consultation/ConsultationFile 모델, ConsultationSerializer(password write_only, password_hash 미노출), ConsultationCreateView(POST /api/consultations/) 구현."
+    },
+    {
+      "step": 2,
+      "name": "backend-lookup",
+      "status": "completed",
+      "summary": "ConsultationLookupView(POST /api/consultations/lookup/) 구현. email 필터 후 check_password() 검증, 미일치 시 404 반환."
+    },
+    {
+      "step": 3,
+      "name": "backend-email",
+      "status": "completed",
+      "summary": "emails.py(send_new_consultation_alert, send_response_notification), signals.py(post_save → _response_changed 플래그 기반), apps.py ready()에서 signals import 완료."
+    },
+    {
+      "step": 4,
+      "name": "backend-tests",
+      "status": "pending"
+    },
+    {
+      "step": 5,
+      "name": "frontend-consultation",
+      "status": "completed",
+      "summary": "Consultation.jsx 구현. 폼 필드(유형/이름/연락처/이메일/비밀번호/내용/첨부파일), axios multipart POST, 성공/에러 피드백."
+    },
+    {
+      "step": 6,
+      "name": "frontend-lookup",
+      "status": "completed",
+      "summary": "Lookup.jsx 구현. 이메일+비밀번호 조회, 상태 배지(접수대기/진행중/완료), 관리자 답변/첨부파일 표시."
+    }
+  ]
+}
