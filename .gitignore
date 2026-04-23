@@ -26,3 +26,7 @@ node_modules/
 
 # Python cache
 __pycache__/
+
+# Phase execution outputs
+phases/**/phase*-output.json
+phases/**/step*-output.json
