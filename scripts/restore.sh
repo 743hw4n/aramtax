@@ -6,12 +6,13 @@ source "${SCRIPT_DIR}/../.env.prod"
 source "${SCRIPT_DIR}/../.env.prod.db"
 
 COMPOSE_FILE="${SCRIPT_DIR}/../docker-compose.prod.yaml"
+TMP_DIR=""
 
 cleanup() {
   if [ "${BACKEND_STOPPED:-false}" = "true" ]; then
     docker compose -f "${COMPOSE_FILE}" start backend
   fi
-  rm -rf "${TMP_DIR}"
+  [ -n "${TMP_DIR}" ] && rm -rf "${TMP_DIR}"
 }
 trap cleanup EXIT
 
@@ -59,7 +60,7 @@ restore_media() {
     -v aramtax_media_volume:/media \
     -v "${TMP_DIR}:/backup" \
     alpine \
-    tar xzf "/backup/media-${RESTORE_DATE}.tar.gz" -C /media
+    sh -c "find /media -mindepth 1 -delete && tar xzf /backup/media-${RESTORE_DATE}.tar.gz -C /media"
 
   echo "[$(date)] 미디어 복구 완료"
 }
