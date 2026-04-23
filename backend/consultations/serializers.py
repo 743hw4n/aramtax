@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db import transaction
 from .models import Consultation, ConsultationFile
 
 class ConsultationFileSerializer(serializers.ModelSerializer):
@@ -32,20 +33,17 @@ class ConsultationSerializer(serializers.ModelSerializer):
         
     def create(self, validated_data):
         """상담 생성 시 비밀번호 해시화 및 파일 저장"""
-        
-        # 파일 데이터 분리
         uploaded_files = validated_data.pop('uploaded_files', [])
         password = validated_data.pop('password')
-        
-        # 상담 객체 생성
-        consultation = Consultation.objects.create(**validated_data)
-        consultation.set_password(password)     # 비밀번호 해시화
-        consultation.save()                     # DB에 저장        
-        
-        # 첨부파일 저장
-        for file in uploaded_files:
-            ConsultationFile.objects.create(consultation=consultation, file=file)   # DB에 저장
-        
+
+        with transaction.atomic():
+            consultation = Consultation.objects.create(**validated_data)
+            consultation.set_password(password)
+            consultation.save()
+
+            for file in uploaded_files:
+                ConsultationFile.objects.create(consultation=consultation, file=file)
+
         return consultation
         
 class ConsultationLookupSerializer(serializers.Serializer):

@@ -29,7 +29,8 @@
     {
       "step": 4,
       "name": "backend-tests",
-      "status": "pending"
+      "status": "completed",
+      "summary": "serializers.py transaction.atomic() 추가, signals.py transaction.on_commit() + 예외 스왈로 적용. ConsultationModelTest/CreateAPITest/LookupAPITest/EmailTest 총 15개 테스트 작성 및 통과."
     },
     {
       "step": 5,
@@ -43,5 +44,6 @@
       "status": "completed",
       "summary": "Lookup.jsx 구현. 이메일+비밀번호 조회, 상태 배지(접수대기/진행중/완료), 관리자 답변/첨부파일 표시."
     }
-  ]
+  ],
+  "created_at": "2026-04-23T15:51:52+0900"
 }
