@@ -30,7 +30,8 @@
       "step": 4,
       "name": "backend-tests",
       "status": "completed",
-      "summary": "serializers.py transaction.atomic() 추가, signals.py transaction.on_commit() + 예외 스왈로 적용. ConsultationModelTest/CreateAPITest/LookupAPITest/EmailTest 총 15개 테스트 작성 및 통과."
+      "summary": "serializers.py transaction.atomic() 추가, signals.py transaction.on_commit() + 예외 스왈로 적용. ConsultationModelTest/CreateAPITest/LookupAPITest/EmailTest 총 15개 테스트 작성 및 통과.",
+      "completed_at": "2026-04-23T15:58:14+0900"
     },
     {
       "step": 5,
